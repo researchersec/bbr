@@ -1,0 +1,30 @@
+name: Fetch BBR Data
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  fetch-data:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Fetch data from BBR API
+      env:
+        BBR_USERNAME: ${{ secrets.BBR_USERNAME }}
+        BBR_PASSWORD: ${{ secrets.BBR_PASSWORD }}
+      run: |
+        python fetch_bbr.py
